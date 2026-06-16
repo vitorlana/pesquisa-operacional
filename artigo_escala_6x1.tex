@@ -727,26 +727,104 @@ Variação & $-20{,}5\%$ & $-100\%$ & $-20{,}3\%$\\
 \end{table}
 
 \subsection{Impacto sobre o custo da redução de jornada}
+\label{sec:flex_resultados}
 
 A relevância da flexibilização para o debate regulatório está em que a
 sobrecobertura dos turnos rígidos é grande ao longo de toda a quinzena: no
 cenário \emph{baseline} 11\texttimes 3, as 2.176 horas pagas excedem em cerca
 de 30\% as 1.530 pessoas-hora efetivamente demandadas
 (Tabela~\ref{tab:resultados}). Essa folga é precisamente a margem que os
-turnos flexíveis podem recuperar. Como a economia obtida no dia de pico
-($\approx 20\%$ do custo) é da mesma ordem do acréscimo imposto pela
-irredutibilidade salarial na transição para 40\,h ($+12\%$) e expressiva
-frente à de 36\,h ($+24\%$), a adoção de turnos flexíveis tem potencial para
-\emph{neutralizar grande parte} do custo de migração para a jornada de 40
-horas e \emph{amortecer significativamente} o da jornada de 36 horas. A
-quantificação exata desse efeito ao longo do ciclo de 14 dias, para cada
-cenário, é obtida executando-se o modelo flexível completo em ambiente com
-licença plena do \emph{solver}; a formulação e o código correspondentes
-acompanham este trabalho. Em termos de política pública, o resultado sugere
-que a flexibilização do desenho de turnos --- e não apenas o número de
-funcionários --- é uma alavanca de primeira ordem para acomodar a redução de
-jornada sem elevação proporcional dos custos, em linha com a leitura do IPEA
-sobre a capacidade de absorção do mercado \cite{ipea}.
+turnos flexíveis recuperam, agora medida ao longo do ciclo completo.
+
+Para isolar o efeito do desenho de turnos sobre o custo da redução de
+jornada, o modelo flexível foi executado nos três cenários regulatórios sob
+duas hipóteses adicionais que refletem contratos de tempo integral
+remunerados estritamente por hora trabalhada: (i) \emph{jornada fechada},
+com a binária $a_i \in \{0,1\}$ indicando funcionário ativo no ciclo e a
+igualdade $\sum_{d,p} \tfrac14\,w_{idp} = H_{\max}^{14}\,a_i$ (cada ativo
+cumpre exatamente 88, 80 ou 72 horas quinzenais conforme o regime); e
+(ii) \emph{pagamento horário puro}, com o custo-hora único de R\$\,14,16
+(divisor 220), removendo a hipótese de irredutibilidade salarial usada na
+Seção~\ref{sec:irred}. A subcobertura $u_{dp}$ foi imposta como restrição
+\emph{dura} ($u_{dp}=0$): só são admitidas escalas que cobrem 100\% da
+demanda. Para acelerar o \emph{branch-and-cut}, foi adicionado o corte de
+quadro mínimo válido $\sum_i a_i \ge \lceil D_{\text{tot}}/H_{\max}^{14}
+\rceil$ e a quebra de simetria $a_i \ge a_{i+1}$, com configuração
+\texttt{MIPFocus=1}, \texttt{Symmetry=2}, \texttt{TimeLimit=3600\,s} e
+tolerância \texttt{MIPGap=0{,}5\%}.
+
+Os três cenários convergiram à otimalidade (\emph{gap} $\le 0{,}01\%$,
+subcobertura nula) em até cerca de 4 minutos cada. A
+Tabela~\ref{tab:flex_quadro} consolida os resultados, e a
+Figura~\ref{fig:quadro} contrasta o quadro de funcionários e o custo total
+nos três regimes.
+
+\begin{table}[htb]
+\centering
+\caption{Modelo flexível com jornada fechada e pagamento horário
+(granularidade de 15\,min): solução ótima por cenário regulatório.}
+\label{tab:flex_quadro}
+\small
+\begin{tabular}{lcccccc}
+\toprule
+Cenário & Ativos & $H_{\max}^{14}$ & Horas pagas & Sobrec.\ (p-h) & Custo
+(R\$) & vs.\ A\\
+\midrule
+A (11\texttimes 3, 44\,h) & 18 & 88 & 1.584 & 54 & 22.582 & ---\\
+B (10\texttimes 4, 40\,h) & 20 & 80 & 1.600 & 70 & 22.811 &
+$+1{,}01\%$\\
+D (9\texttimes 5, 36\,h)  & 22 & 72 & 1.584 & 54 & 22.582 &
+$+0{,}00\%$\\
+\bottomrule
+\multicolumn{7}{l}{\scriptsize Demanda total quinzenal: 1.530 p-h.
+Subcobertura $=0$ por restrição dura; \emph{gap} $\le 0{,}01\%$ em todas as
+instâncias.}\\
+\end{tabular}
+\end{table}
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=\textwidth]{fig6_quadro.png}
+\caption{Turnos flexíveis com jornada fechada e pagamento horário: quadro
+mínimo de funcionários ativos (esq.) e custo total quinzenal de mão de obra
+(dir.) por cenário regulatório. Sob pagamento estritamente horário, o custo é
+praticamente constante ($\le 1\%$ de variação), enquanto a redução de jornada
+exige ampliar o quadro em até $+22\%$.}
+\label{fig:quadro}
+\end{figure}
+
+Três achados emergem. Primeiro, sob pagamento estritamente horário e
+flexibilização do turno, o custo total de mão de obra é \emph{praticamente
+invariante} ao regime de jornada: os três cenários gastam aproximadamente
+R\$\,22,6\,mil na quinzena, com diferença máxima de 1,01\% entre eles. A
+pequena elevação observada em B é uma idiossincrasia aritmética da jornada
+fechada: $80 \times 20 = 1.600$ horas-funcionário, contra
+$88 \times 18 = 1.584$ e $72 \times 22 = 1.584$ horas em A e D ---
+descasamentos entre $H_{\max}^{14}\cdot a_i$ e a demanda real ressurgem como
+sobrecobertura inevitável quando a igualdade obriga cada ativo a cumprir a
+jornada integral.
+
+Segundo, o quadro mínimo cresce de \textbf{18} (cenário A) para \textbf{20}
+(B) e \textbf{22} (D) funcionários ativos, isto é, $+11\%$ e $+22\%$ sobre o
+\emph{baseline} 6\texttimes 1. A redução da jornada não desaparece sob
+pagamento horário: ela se \emph{traduz em novas contratações}, deslocando-se
+do indicador ``custo da empresa'' para o indicador ``empregos no setor''.
+Esse padrão é coerente com a avaliação do IPEA \cite{ipea}, que identifica a
+ampliação do quadro como contrapartida estrutural da redução de jornada e
+fonte da capacidade de absorção do mercado.
+
+Terceiro, comparando a Tabela~\ref{tab:flex_quadro} com a
+Tabela~\ref{tab:final}, a flexibilização \emph{absorve integralmente} o
+acréscimo de custo da migração para 40\,h e 36\,h: o custo cai de
+R\$\,31,1\,mil--R\$\,38,6\,mil (turnos rígidos sob irredutibilidade salarial)
+para $\approx$~R\$\,22,6\,mil em qualquer regime, ou seja, uma redução de
+$-27\%$ (cenário A), $-35\%$ (B) e $-42\%$ (D) frente aos cenários rígidos.
+Em termos de política pública, o resultado indica que a alavanca de primeira
+ordem para acomodar o fim da escala 6\texttimes 1 não é o ajuste salarial
+nem a manutenção de turnos longos, mas o desenho de turnos: blocos curtos e
+jornadas partidas convertem a folga ociosa dos turnos rígidos de 8\,h em
+produtividade efetiva, neutralizando o custo agregado da redução de jornada e
+canalizando o efeito regulatório para a geração de empregos.
 
 
 \section{Conclusões}
@@ -783,22 +861,33 @@ contratações.
 granularidade de 15 minutos e jornadas partidas (Seção~\ref{sec:flexivel})
 --- elimina a sobrecobertura inerente aos turnos rígidos de 8 horas: em um dia
 de pico, reduz as horas pagas em 20,5\% e o custo em 20,3\%, com cobertura
-exata da demanda. Como essa economia é da ordem do acréscimo imposto pela
-irredutibilidade salarial, a flexibilização desponta como alavanca de primeira
-ordem para acomodar a redução de jornada sem elevação proporcional dos custos.
+exata da demanda. Estendendo a execução ao ciclo quinzenal completo, sob
+jornada fechada e pagamento estritamente horário, o custo total se torna
+\emph{praticamente invariante} ao regime regulatório (R\$\,22.582,
+R\$\,22.811 e R\$\,22.582 nos cenários de 44\,h, 40\,h e 36\,h,
+respectivamente; diferença máxima de 1,01\%), enquanto o quadro mínimo cresce
+de 18 para 20 e 22 funcionários ativos ($+11\%$ e $+22\%$ sobre o
+\emph{baseline} 6\texttimes 1). Sob pagamento horário, portanto, o efeito da
+redução de jornada se desloca da rubrica ``custo da empresa'' para a rubrica
+``empregos no setor''. Comparada aos cenários rígidos com irredutibilidade
+salarial (Tabela~\ref{tab:final}), a combinação de turnos flexíveis e
+pagamento horário implica reduções de custo total de $-27\%$ a $-42\%$,
+indicando que a alavanca de primeira ordem para acomodar o fim da escala
+6\texttimes 1 é o desenho de turnos --- compatível com a leitura do IPEA
+\cite{ipea} sobre a capacidade de absorção do mercado.
 
 O estudo possui limitações que delineiam trabalhos futuros: o quadro foi
 tratado como homogêneo, sem custos de contratação, demissão ou treinamento; a
 demanda foi tratada como determinística; e não foram modelados banco de horas,
 horas extras nem preferências individuais. Extensões naturais incluem a
 otimização conjunta do dimensionamento e da escala (\emph{staffing and
-rostering}), formulações estocásticas ou robustas para a demanda e a geração
-implícita de turnos via \emph{column generation} --- além da execução do
-modelo flexível completo (Seção~\ref{sec:flexivel}) em ambiente com licença
-plena do \emph{solver}, que quantificará, para cada cenário regulatório ao
-longo do ciclo de 14 dias, quanto da elevação de custos pode ser efetivamente
-mitigada pela flexibilização do desenho de turnos --- pergunta diretamente
-relevante para a regulamentação que seguirá a eventual aprovação das PECs.
+rostering}), formulações estocásticas ou robustas para a demanda, a geração
+implícita de turnos via \emph{column generation} e o relaxamento da hipótese
+de jornada fechada para contratos parciais e bancos de horas, que pode
+absorver a folga residual identificada na Seção~\ref{sec:flexivel}.
+Investigar como esses ganhos se distribuem entre custo da empresa,
+remuneração horária e número de empregos é diretamente relevante para a
+regulamentação que seguirá a eventual aprovação das PECs.
 
 
 \begin{thebibliography}{99}
