@@ -1,0 +1,53 @@
+{
+ "A": {
+  "label": "A - 11x3 (equiv. 6x1, 44h/sem)",
+  "hmax14": 88,
+  "wmax": 11,
+  "funcionarios_ativos": 18,
+  "custo_mo": 22581.99924363636,
+  "horas_pagas": 1584.0,
+  "subcobertura": 0.0,
+  "sobrecobertura": 54.0,
+  "demanda_total_ph": 1530.0,
+  "n_vars": 46071,
+  "n_bin": 22775,
+  "n_constrs": 83721,
+  "runtime": 110.04693007469177,
+  "mip_gap": 0.0,
+  "status": 2
+ },
+ "B": {
+  "label": "B - 10x4 (equiv. 5x2, 40h/sem)",
+  "hmax14": 80,
+  "wmax": 10,
+  "funcionarios_ativos": 20,
+  "custo_mo": 22810.622167272722,
+  "horas_pagas": 1600.0,
+  "subcobertura": 0.0,
+  "sobrecobertura": 70.0,
+  "demanda_total_ph": 1530.0,
+  "n_vars": 46071,
+  "n_bin": 22775,
+  "n_constrs": 83721,
+  "runtime": 228.98101091384888,
+  "mip_gap": 9.30896451539654e-05,
+  "status": 2
+ },
+ "D": {
+  "label": "D - 9x5 (equiv. 4x3, 36h/sem)",
+  "hmax14": 72,
+  "wmax": 9,
+  "funcionarios_ativos": 22,
+  "custo_mo": 22581.99924363636,
+  "horas_pagas": 1584.0,
+  "subcobertura": 0.0,
+  "sobrecobertura": 54.0,
+  "demanda_total_ph": 1530.0,
+  "n_vars": 46071,
+  "n_bin": 22775,
+  "n_constrs": 83721,
+  "runtime": 254.81751418113708,
+  "mip_gap": 0.0,
+  "status": 2
+ }
+}
